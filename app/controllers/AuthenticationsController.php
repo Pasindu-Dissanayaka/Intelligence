@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use Leaf\Http\Cookie;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -56,7 +57,7 @@ class AuthenticationsController extends Controller
             'expire' => time() + $this->expire,
             'path' => '/',
             'domain' => '',
-            'secure' => true,
+            'secure' => false,   // TODO: Change this to true
             'httponly' => true,
             'samesite' => 'strict'
         ]);
