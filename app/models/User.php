@@ -8,6 +8,7 @@ class User extends Model
      * The attributes that are mass assignable.
      * @var array
      */
+    protected $table = 'users';
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -33,4 +34,13 @@ class User extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The Eloquent Model Relationship definition
+     * @var class
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

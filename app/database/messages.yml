@@ -1,0 +1,22 @@
+timestamps: false
+
+columns:
+  userID:
+    type: foreignId
+  message:
+    type: string
+    length: 255
+  is_bot:
+    type: boolean
+  sent_at:
+    type: timestamp
+
+seeds:
+  count: 5
+  truncate: true
+  data:
+    messageID: ''
+    user: '2'
+    message: '@faker.sentences'
+    is_bot: '0'
+    sent_at: '@tick.format:YYYY-MM-DD HH:mm:ss'

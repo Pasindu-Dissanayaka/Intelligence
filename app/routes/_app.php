@@ -13,12 +13,10 @@ app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
   app()->get('/me', 'AuthenticationsController@me');
 
   app()->get('/', function () {
-    echo 'User Greeting Page';
+    response()->redirect('/dashboard');
   });
 
-  app()->get('/ask-ai', function () {
-    echo 'Talk to our AI but with your daily limit';
-  });
+  app()->post('/ask-ai', 'ChatsController@ask');
 
   app()->get('/history', function () {
     echo 'See your previous prompts & AI responses';

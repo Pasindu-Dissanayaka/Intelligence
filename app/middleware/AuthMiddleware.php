@@ -38,7 +38,7 @@ class AuthMiddleware extends Middleware
             $user = User::where('id', $decoded->sub)->first();
             if (!$user) throw new \Exception('User not found');
             // Store in global if needed
-            app()->set('auth_user', $user);
+            response()->next($user);
         } catch (\Exception $e) {
             response()->json(['error' => 'Invalid token'], 401);
             exit;

@@ -11,10 +11,10 @@ columns:
   password: string
 
 seeds:
-  count: 5
+  count: 1
   truncate: true
   data:
     name: '@faker.name'
-    email: '@faker.unique.safeEmail'
-    password: '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' # password
+    email: 'elfrieda25@example.org'
+    password: '$2a$12$rPcbYl0ZAiTKtX1wghtC7ONZJQHdKFvCv33aRW.Ufxr5GYjueCldm' # yJ9obwzH102OuZy3UCjRroK49O
     email_verified_at: '@tick.format:YYYY-MM-DD HH:mm:ss'

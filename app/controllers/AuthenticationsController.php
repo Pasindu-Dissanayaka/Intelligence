@@ -96,7 +96,8 @@ class AuthenticationsController extends Controller
 
     public function refreshToken()
     {
-        $token = request()->get('token');
+        // Read token value from cookie
+        $token = request()->cookies('secureToken');
 
         try {
             $decoded = JWT::decode($token, new Key($this->publicKey, $this->algorithm));
@@ -125,10 +126,17 @@ class AuthenticationsController extends Controller
         $headers = apache_request_headers();
         $auth = $headers['Authorization'] ?? '';
 
-        if (!preg_match('/Bearer\s(\S+)/', $auth, $matches)) return null;
+        // Read token value from cookie
+        $token = request()->cookies('secureToken');
+
+        // validate the token value (is required)
+        if (!$token) {
+            return null;
+            exit;
+        }
 
         try {
-            $decoded = JWT::decode($matches[1], new Key($this->publicKey, $this->algorithm));
+            $decoded = JWT::decode($token, new Key($this->publicKey, $this->algorithm));
             return User::where('id', $decoded->sub)->first();
         } catch (\Exception $e) {
             return null;
