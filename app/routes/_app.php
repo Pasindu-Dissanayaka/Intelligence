@@ -1,4 +1,5 @@
 <?php
+
 use App\Middleware\AuthMiddleware;
 
 // Default path to Login
@@ -12,6 +13,8 @@ app()->get('/login/validate', ['middleware' => 'auth', 'AuthenticationsControlle
 app()->get('/refresh', ['middleware' => 'auth', 'AuthenticationsController@refreshToken']);
 
 app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
+  app()->get('/me', 'AuthenticationsController@me');
+
   app()->get('/', function () {
     echo 'User Greeting Page';
   });
@@ -26,5 +29,5 @@ app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
 
   app()->get('/analytics', function () {
     echo 'Check your  basic usage stats';
-  });  
+  });
 }]);
