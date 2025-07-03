@@ -12,11 +12,13 @@ class AuthenticationsController extends Controller
     private $publicKey;
     private $algorithm = "RS256";  // Using RS256 to use Keys for signing rather than a password.
     private $expire = 3600; // 1 hour
+    private $domain;
 
     public function __construct()
     {
         $this->privateKey = file_get_contents(StoragePath('/keys/private.key'));
         $this->publicKey = file_get_contents(StoragePath('/keys/public.key'));
+        $this->domain = _env('APP_URL', '');
     }
 
     public function loginPage()
@@ -41,7 +43,7 @@ class AuthenticationsController extends Controller
 
         // Cool! Let's do the JWT token now
         $payload = [
-            'iss' => 'https://intelligence.pasindudissan.xyz',  // issuer I used an active domain for this
+            'iss' => $this->domain,  // issuer I used an active domain for this
             'sub' => $user['id'],
             'iat' => time(),
             'exp' => time() + $this->expire
@@ -49,8 +51,17 @@ class AuthenticationsController extends Controller
 
         $jwt = JWT::encode($payload, $this->privateKey, $this->algorithm);
 
-        // Return token
-        response()->json(['token' => $jwt]);
+        // Set token in secure httpOnly cookie
+        cookie()->set('secureToken', $jwt, [
+            'expire' => time() + $this->expire,
+            'path' => '/',
+            'domain' => '',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'strict'
+        ]);
+        // return success
+        response()->json(['success' => true]);
     }
 
     public function registerPage()
@@ -70,7 +81,7 @@ class AuthenticationsController extends Controller
 
         // Load User Data if User Exists
         $exists = User::where('email', $data['email'])->first();
-        if($exists) return response()->json(['error' => 'Email already registered'], 409);
+        if ($exists) return response()->json(['error' => 'Email already registered'], 409);
 
         // Hash the password
         $hashed = password_hash($data['password'], PASSWORD_BCRYPT);
@@ -80,15 +91,16 @@ class AuthenticationsController extends Controller
 
         // Return success with UserID
         response()->json(['success' => true, 'user_id' => $user->id]);
-    }   
+    }
 
-    public function refreshToken(){
+    public function refreshToken()
+    {
         $token = request()->get('token');
 
         try {
             $decoded = JWT::decode($token, new Key($this->publicKey, $this->algorithm));
             $newPayload = [
-                'iss' => 'https://intelligence.pasindudissan.xyz',  // issuer I used an active domain for this
+                'iss' => $this->domain,  // issuer I used an active domain for this
                 'sub' => $decoded->sub,
                 'iat' => time(),
                 'exp' => time() + $this->expire

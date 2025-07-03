@@ -13,28 +13,30 @@ class AuthMiddleware extends Middleware
     private $publicKey;
     private $algorithm = "RS256";  // Using RS256 to use Keys for signing rather than a password.
     private $expire = 3600; // 1 hour
+    private $domain;
 
     public function __construct()
     {
         $this->privateKey = file_get_contents(StoragePath('/keys/private.key'));
         $this->publicKey = file_get_contents(StoragePath('/keys/public.key'));
+        $this->domain = _env('APP_URL', '');
     }
     
     public function call()
     {
-        $headers = apache_request_headers();
-        $auth = $headers['Authorization'] ?? '';
+        // Read token value from cookie
+        $token = request()->cookies('secureToken');
 
-        if (!preg_match('/Bearer\s(\S+)/', $auth, $matches)) {
+        // validate the token value (is required)
+        if (!$token) {
             response()->json(['error' => 'Unauthorized'], 401);
             exit;
         }
 
         try {
-            $decoded = JWT::decode($matches[1], new Key($this->publicKey, $this->algorithm));
+            $decoded = JWT::decode($token, new Key($this->publicKey, $this->algorithm));
             $user = User::where('id', $decoded->sub)->first();
             if (!$user) throw new \Exception('User not found');
-
             // Store in global if needed
             app()->set('auth_user', $user);
         } catch (\Exception $e) {
