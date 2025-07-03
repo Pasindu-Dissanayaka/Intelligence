@@ -1,4 +1,3 @@
-{{-- blogs.blade.php --}}
 @extends('layouts.authentication')
 
 @section('title')
