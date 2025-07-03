@@ -13,7 +13,7 @@ app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
   app()->get('/me', 'AuthenticationsController@me');
 
   app()->get('/', function () {
-    response()->redirect('/dashboard');
+    response()->view('app.interface');
   });
 
   app()->post('/ask-ai', 'ChatsController@ask');
