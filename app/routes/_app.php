@@ -2,15 +2,12 @@
 
 use App\Middleware\AuthMiddleware;
 
-// Default path to Login
-app()->response()->redirect('/login');
-
 // Login Pages
-app()->get('/register', ['middleware' => 'auth', 'AuthenticationsController@registerPage']);
-app()->get('/register/validate', ['middleware' => 'auth', 'AuthenticationsController@registerAction']);
-app()->get('/login', ['middleware' => 'auth', 'AuthenticationsController@loginPage']);
-app()->get('/login/validate', ['middleware' => 'auth', 'AuthenticationsController@loginAction']);
-app()->get('/refresh', ['middleware' => 'auth', 'AuthenticationsController@refreshToken']);
+app()->get('/register', 'AuthenticationsController@registerPage');
+app()->get('/register/validate', 'AuthenticationsController@registerAction');
+app()->get('/login', 'AuthenticationsController@loginPage');
+app()->get('/login/validate', 'AuthenticationsController@loginAction');
+app()->get('/refresh', 'AuthenticationsController@refreshToken');
 
 app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
   app()->get('/me', 'AuthenticationsController@me');
