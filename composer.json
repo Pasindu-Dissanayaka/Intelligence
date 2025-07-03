@@ -15,7 +15,8 @@
         "leafs/mvc-core": "^4.0",
         "leafs/leaf": "^4.0",
         "leafs/logger": "^4.0",
-        "firebase/php-jwt": "^6.11"
+        "firebase/php-jwt": "^6.11",
+        "leafs/cookie": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24"

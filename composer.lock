@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfe6fc111bc782594ef3c7c57ee6cf06",
+    "content-hash": "7cb529dd6c25ed77492f158300e74488",
     "packages": [
         {
             "name": "brick/math",
@@ -1323,6 +1323,66 @@
                 }
             ],
             "time": "2025-04-28T16:59:40+00:00"
+        },
+        {
+            "name": "leafs/cookie",
+            "version": "v4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafsphp/cookie.git",
+                "reference": "5d4aff5bba4c23785b9ebac8465701b35a5791d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafsphp/cookie/zipball/5d4aff5bba4c23785b9ebac8465701b35a5791d2",
+                "reference": "5d4aff5bba4c23785b9ebac8465701b35a5791d2",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Leaf\\Http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Darko",
+                    "email": "mickdd22@gmail.com",
+                    "homepage": "https://mychi.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Leaf PHP cookie module",
+            "homepage": "https://leafphp.netlify.app/#/",
+            "keywords": [
+                "cookies",
+                "framework",
+                "http",
+                "leaf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/leafsphp/cookie/issues",
+                "source": "https://github.com/leafsphp/cookie/tree/v4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/leafsphp",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/leaf",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2025-03-06T09:49:34+00:00"
         },
         {
             "name": "leafs/date",
