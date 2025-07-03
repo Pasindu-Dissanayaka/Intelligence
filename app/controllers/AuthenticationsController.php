@@ -29,7 +29,7 @@ class AuthenticationsController extends Controller
     public function loginAction()
     {
         // Validate and Sanitize Inputs
-        if (!$data = request()->validate(['email' => 'email|min:3', 'password' => 'password|min:12'])) {
+        if (!$data = request()->validate(['email' => 'email|min:3', 'password' => 'alphaDash|min:12'])) {
             // validation failed, redirect back with errors //
             return response()->json(['error' => request()->errors()], 401);
         }
@@ -72,7 +72,7 @@ class AuthenticationsController extends Controller
     public function registerAction()
     {
         // Validate and Sanitize Inputs
-        if (!$data = request()->validate(['email' => 'email', 'username' => 'text|min:3', 'password' => 'password|min:12'])) {
+        if (!$data = request()->validate(['email' => 'email', 'username' => 'text|min:3', 'password' => 'alphaDash|min:12'])) {
             // validation failed, redirect back with errors //
             return response()
                 ->withFlash('errors', request()->errors())
