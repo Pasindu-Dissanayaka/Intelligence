@@ -36,13 +36,13 @@
                     <h6 class="ps-3  ms-2 text-uppercase text-xs font-weight-bolder text-dark">MANAGE</h6>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link text-dark " href="/history">
+                    <a class="nav-link text-dark " href="/dashboard/history">
                         <span class="sidenav-mini-icon"> H </span>
                         <span class="sidenav-normal  ms-1  ps-1"> History </span>
                     </a>
                 </li>                
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/analytics">
+                    <a class="nav-link text-dark" href="/dashboard/analytics">
                         <span class="sidenav-mini-icon"> A </span>
                         <span class="sidenav-normal ms-1 ps-1"> Analytics </span>
                     </a>

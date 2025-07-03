@@ -45,7 +45,7 @@ document.getElementById('chatForm').addEventListener('submit', async function (e
     input.value = '';
 
     try {
-        const response = await fetch('/dashboard/ask-ai', {
+        const response = await fetch('/ask-ai', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
