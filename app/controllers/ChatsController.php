@@ -155,6 +155,7 @@ class ChatsController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        $username = $user->name;
         $messages = $user->messages;
         $totalMessages = $messages->count();
         $userMessages = $messages->where('is_bot', 0)->count();
@@ -177,6 +178,6 @@ class ChatsController extends Controller
             ];
         });
         
-        return response()->view('app.analytics', ['stats' => [ 'total' => $totalMessages, 'user_sent' => $userMessages, 'bot_replies' => $botMessages, 'token_estimate' => $totalTokens ], 'daily' => $daily]);
+        return response()->view('app.analytics', ['stats' => [ 'total' => $totalMessages, 'user_sent' => $userMessages, 'bot_replies' => $botMessages, 'token_estimate' => $totalTokens ], 'daily' => $daily, 'username' => $username]);
     }
 }
