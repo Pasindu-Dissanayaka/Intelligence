@@ -10,6 +10,8 @@ columns:
     type: boolean
   sent_at:
     type: timestamp
+  usage:
+    type: json
 
 seeds:
   count: 5
