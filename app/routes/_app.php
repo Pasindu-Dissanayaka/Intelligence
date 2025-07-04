@@ -18,7 +18,7 @@ app()->post('/logout/validate', 'AuthenticationsController@logoutAction');
 
 app()->post('/ask-ai', ['middleware' => AuthMiddleware::class, 'ChatsController@ask']);
 app()->post('/history', ['middleware' => AuthMiddleware::class, 'ChatsController@history']);
-app()->get('/analytics', ['middleware' => AuthMiddleware::class, 'ChatsController@analytics']);
+app()->post('/analytics', ['middleware' => AuthMiddleware::class, 'ChatsController@analytics']);
 
 app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
   app()->get('/me', 'AuthenticationsController@me');

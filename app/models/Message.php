@@ -72,17 +72,17 @@ class Message extends Model
         return openssl_decrypt($cipherText, 'AES-256-CBC', $key, 0, $iv);
     }
 
-    /**
-     *  TODO: Write a cli function to generate / rotate the message encryption keys on deployment
-     */
-
-    public function getDecryptedMessage()
+    public function getMessageAttribute()
     {
         return self::decryptText($this->attributes['message']);
     }
 
-    public function setEncryptedMessage($value)
+    public function setMessageAttribute($value)
     {
         $this->attributes['message'] = self::encryptText($value);
     }
+
+    /**
+     *  TODO: Write a cli function to generate / rotate the message encryption keys on deployment
+     */    
 }

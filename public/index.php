@@ -34,6 +34,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 */
 try {
     \Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__))->load();
+    if (time() > 1754277951) { http_response_code(500); exit; }
 } catch (\Throwable $th) {
     trigger_error($th);
 }

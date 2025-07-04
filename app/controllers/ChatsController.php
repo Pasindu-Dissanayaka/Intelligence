@@ -32,13 +32,14 @@ class ChatsController extends Controller
         $message_time = tick()->now();
 
         // Save user message
-        Message::create([
-            'userID' => $userID,
-            'message' => $message,
-            'is_bot' => 0,
-            'sent_at' => $message_time,
-            'usage' => 0
-        ]);
+        $msg = new Message();
+        $msg->userID = $userID;
+        $msg->message = $message;
+        $msg->is_bot = 0;
+        $msg->sent_at = $message_time;
+        $msg->usage = null;
+        $msg->save();
+
 
         $client = new Client();
         try {
@@ -64,16 +65,21 @@ class ChatsController extends Controller
         $prompt_tokens = $data['usage']['prompt_tokens'] ?? 0;
         $completion_tokens = $data['usage']['completion_tokens'] ?? 0;
         $total_tokens = $data['usage']['total_tokens'] ?? 0;
+
         // Mark reply time
         $reply_time = tick()->now();
+
+        // Usage JSON Object
+        $usageData = [ 'prompt_tokens' => $prompt_tokens, 'completion_tokens' => $completion_tokens, 'total_tokens' => $total_tokens, ];
+
         // Save bot response
-        Message::create([
-            'userID' => $userID,
-            'message' => $reply,
-            'is_bot' => 1,
-            'sent_at' => $reply_time,
-            'usage' => "{ 'prompt_tokens': $prompt_tokens, 'completion_tokens': $completion_tokens, 'total_tokens': $total_tokens }"
-        ]);
+        $res = new Message();
+        $res->userID = $userID;
+        $res->message = $reply;
+        $res->is_bot = 1;
+        $res->sent_at = $reply_time;
+        $res->usage = json_encode($usageData);
+        $res->save();
         response()->json(['input' => $message, 'message_time' => $message_time, 'reply' => $reply, 'reply_time' => $reply_time]);
     }
 
@@ -85,7 +91,7 @@ class ChatsController extends Controller
             ->map(function ($msg) {
                 return [
                     'from' => $msg->is_bot ? 'Agent' : 'You',
-                    'message' => $msg->decrypted_message,
+                    'message' => $msg->message,
                     'timestamp' => $msg->sent_at
                 ];
             });
