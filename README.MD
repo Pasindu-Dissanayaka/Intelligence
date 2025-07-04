@@ -47,18 +47,14 @@ APP_KEY=base64:GENERATED_KEY
 
 # OpenAI Key
 OPENAI_API_KEY=your-openai-api-key-here
-
-# JWT Config (RS256)
-JWT_ALGO=RS256
-JWT_PRIVATE_KEY_PATH=storage/jwt/private.key
-JWT_PUBLIC_KEY_PATH=storage/jwt/public.key
+MESSAGE_ENCRYPTION_KEY==add-aes-256-cbc-key-here
 
 # DB Config
 DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=leaf_gpt
-DB_USERNAME=youruser
-DB_PASSWORD=yourpassword
+DB_DATABASE=DB_NAME
+DB_USERNAME=DB_USERNAME
+DB_PASSWORD=DB_PASSWORD
 ```
 ---
 
@@ -78,7 +74,21 @@ openssl rsa -pubout -in storage/jwt/private.key -out storage/jwt/public.key
 
 ---
 
-### 4.  Migrate the Database
+### 4. Generate an AES-256-CBC key
+
+To use AES-256 for Message Encryption:
+
+```bash
+openssl rand -base64 32
+```
+Copy the above output into your ENV file
+Or use the one in the sample for a demo
+
+DO NOT USE THAT KEY IN PROD EITHER (-_-)
+
+---
+
+### 5.  Migrate the Database
 
 ```bash
 php leaf db:migrate
@@ -86,7 +96,7 @@ php leaf db:migrate
 
 ---
 
-### 5. 📡 Serve the App (Dev)
+### 6. 📡 Serve the App (Dev)
 
 ```bash
 php leaf serve
