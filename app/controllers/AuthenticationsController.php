@@ -114,6 +114,34 @@ class AuthenticationsController extends Controller
         }
     }
 
+    public function logoutAction()
+    {
+        setcookie('access_token', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'domain' => '',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
+
+        response()->json(['message' => 'Logged out']);
+    }
+
+        public function logoutPage()
+    {
+        setcookie('access_token', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'domain' => '',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
+
+        response()->redirect('/login');
+    }
+
     public function me()
     {
         $user = $this->getUserFromToken();

@@ -36,7 +36,8 @@ class ChatsController extends Controller
             'userID' => $userID,
             'message' => $message,
             'is_bot' => 0,
-            'sent_at' => $message_time
+            'sent_at' => $message_time,
+            'usage' => 0
         ]);
 
         $client = new Client();
@@ -108,16 +109,17 @@ class ChatsController extends Controller
         $totalMessages = $messages->count();
         $userMessages = $messages->where('is_bot', 0)->count();
         $botMessages = $messages->where('is_bot', 1)->count();
-        $firstMessage = $messages->sortBy('created_at')->first()?->created_at;
 
-        // Optional: Estimated token usage (rough estimate: 1 token ~= 4 chars)
-        $totalTokenEstimate = $messages->sum(function ($msg) {
-            return ceil(strlen($msg->decrypted_message) / 4);
+        // Total token usage from OpenAI API
+        $totalTokens = $messages->sum(function ($msg) {
+            if (!$msg->token_usage) return 0; // skip nulls
+            $usage = json_decode($msg->token_usage, true);
+            return $usage['total_tokens'] ?? 0;
         });
 
-        // Optional: Daily usage breakdown
+        // Daily usage breakdown
         $daily = $messages->groupBy(function ($msg) {
-            return \Carbon\Carbon::parse($msg->created_at)->format('Y-m-d');
+            return \Carbon\Carbon::parse($msg->sent_at)->format('Y-m-d');
         })->map(function ($dayMsgs) {
             return [
                 'user' => $dayMsgs->where('is_bot', 0)->count(),
@@ -130,14 +132,39 @@ class ChatsController extends Controller
                 'total' => $totalMessages,
                 'user_sent' => $userMessages,
                 'bot_replies' => $botMessages,
-                'first_message' => $firstMessage,
-                'token_estimate' => $totalTokenEstimate
+                'token_estimate' => $totalTokens
             ],
             'daily' => $daily
         ]);
     }
 
     public function analyticsPage() {
+        $user = User::find($this->currentUserID);
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        $messages = $user->messages;
+        $totalMessages = $messages->count();
+        $userMessages = $messages->where('is_bot', 0)->count();
+        $botMessages = $messages->where('is_bot', 1)->count();
 
+        // Total token usage from OpenAI API
+        $totalTokens = $messages->sum(function ($msg) {
+            if (!$msg->token_usage) return 0; // skip nulls
+            $usage = json_decode($msg->token_usage, true);
+            return $usage['total_tokens'] ?? 0;
+        });
+
+        // Daily usage breakdown
+        $daily = $messages->groupBy(function ($msg) {
+            return \Carbon\Carbon::parse($msg->sent_at)->format('Y-m-d');
+        })->map(function ($dayMsgs) {
+            return [
+                'user' => $dayMsgs->where('is_bot', 0)->count(),
+                'bot' => $dayMsgs->where('is_bot', 1)->count(),
+            ];
+        });
+        
+        return response()->view('app.analytics', ['stats' => [ 'total' => $totalMessages, 'user_sent' => $userMessages, 'bot_replies' => $botMessages, 'token_estimate' => $totalTokens ], 'daily' => $daily]);
     }
 }
