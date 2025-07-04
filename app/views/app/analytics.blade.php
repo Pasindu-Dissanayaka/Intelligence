@@ -132,7 +132,6 @@ Chat Analytics
             </div>
         </div>
     </div>
-    {{ \Leaf\DevTools::console($daily); }}
     @endsection
 
     @section('custom_js')

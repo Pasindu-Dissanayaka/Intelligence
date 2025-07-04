@@ -52,7 +52,7 @@
                     <h6 class="ps-3  ms-2 text-uppercase text-xs font-weight-bolder text-dark">DOCS</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#" target="_blank">
+                    <a class="nav-link text-dark" href="">
                         <i class="material-symbols-rounded opacity-5">receipt_long</i>
                         <span class="nav-link-text ms-1 ps-1">Changelog</span>
                     </a>
