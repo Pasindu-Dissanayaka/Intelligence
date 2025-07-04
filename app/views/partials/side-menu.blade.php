@@ -14,7 +14,7 @@
                         <img src="../../assets/img/team-2.jpg" class="avatar">
                         <span class="nav-link-text ms-2 ps-1">Pasindu Dissanayaka</span>
                     </a>
-                    <div class="collapse" id="ProfileNav" style="">
+                    <div class="collapse" id="ProfileNav">
                         <ul class="nav ">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="/logout">
