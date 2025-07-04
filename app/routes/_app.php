@@ -3,14 +3,20 @@
 use App\Middleware\AuthMiddleware;
 
 // Redirect All Visitors to Login Page
-app()->get('/', function() {
+app()->get('/', function () {
   response()->redirect('/login');
 });
 
 // Login Pages
-app()->get('/register', 'AuthenticationsController@registerPage');
+app()->get('/register', function () {
+  response()->render('auth.register');
+});
 app()->post('/register/validate', 'AuthenticationsController@registerAction');
-app()->get('/login', 'AuthenticationsController@loginPage');
+
+app()->get('/login', function () {
+  response()->render('auth.login');
+});
+
 app()->post('/login/validate', 'AuthenticationsController@loginAction');
 app()->post('/refresh', 'AuthenticationsController@refreshToken');
 app()->get('/logout', 'AuthenticationsController@logoutPage');
@@ -23,12 +29,9 @@ app()->post('/analytics', ['middleware' => AuthMiddleware::class, 'ChatsControll
 app()->group('/dashboard', ['middleware' => AuthMiddleware::class, function () {
   app()->get('/me', 'AuthenticationsController@me');
 
-  app()->get('/', function () {
-    response()->view('app.interface');
-  });
+  app()->get('/', 'ChatsController@interfacePage');
 
   app()->get('/history', 'ChatsController@historyPage');
 
   app()->get('/analytics', 'ChatsController@analyticsPage');
-
 }]);

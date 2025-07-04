@@ -2,7 +2,7 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand px-4 py-3 m-0" href="/">
-                <img src="../../assets/img/logo-ct-dark.png" class="navbar-brand-img" width="26" height="26" alt="main_logo">
+                <img src="{{assets('/img/logo-ct-dark.png')}}" class="navbar-brand-img" width="26" height="26" alt="main_logo">
                 <span class="ms-1 text-sm text-dark">Intelligence</span>
             </a>
         </div>
@@ -11,8 +11,8 @@
             <ul class="navbar-nav">
                 <li class="nav-item mb-2 mt-0">
                     <a data-bs-toggle="collapse" href="#ProfileNav" class="nav-link text-dark" aria-controls="ProfileNav" role="button" aria-expanded="false">
-                        <img src="../../assets/img/team-2.jpg" class="avatar">
-                        <span class="nav-link-text ms-2 ps-1">Pasindu Dissanayaka</span>
+                        <img src="{{assets('/img/team-2.jpg')}}" class="avatar">
+                        <span class="nav-link-text ms-2 ps-1">{{ $username ?? 'Demo User' }}</span>
                     </a>
                     <div class="collapse" id="ProfileNav">
                         <ul class="nav ">

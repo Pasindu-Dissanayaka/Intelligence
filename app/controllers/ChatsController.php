@@ -14,7 +14,6 @@ class ChatsController extends Controller
 
     public function __construct()
     {
-
         $request = request()->next();
         $this->currentUserID = $request['id'];
     }
@@ -40,7 +39,6 @@ class ChatsController extends Controller
         $msg->usage = null;
         $msg->save();
 
-
         $client = new Client();
         try {
             $response = $client->request('POST', 'https://api.openai.com/v1/chat/completions', [
@@ -60,6 +58,7 @@ class ChatsController extends Controller
             $data = json_decode($response->getBody(), true);
         } catch (\Exception $e) {
             // return response()->json(['error' => 'OpenAI error: ' . $e->getMessage()], 500);
+            // TODO: We'll send to Error Log
         }
         $reply = $data['choices'][0]['message']['content'] ?? "Sorry the OpenAI endpoint is busy at the moment. Please try again later.";
         $prompt_tokens = $data['usage']['prompt_tokens'] ?? 0;
@@ -101,8 +100,14 @@ class ChatsController extends Controller
 
     public function historyPage()
     {
+        $username = User::find($this->currentUserID)['name'];
         $messages = Message::where('userID', $this->currentUserID)->orderBy('sent_at', 'asc')->get();
-        response()->view('app.history', ['conversations' => $messages]);
+        response()->view('app.history', ['conversations' => $messages, 'username' => $username]);
+    }
+
+    public function interfacePage(){
+        $username = User::find($this->currentUserID)['name'];
+        response()->view('app.interface', ['username' => $username]);
     }
 
     public function analytics()
@@ -140,7 +145,8 @@ class ChatsController extends Controller
                 'bot_replies' => $botMessages,
                 'token_estimate' => $totalTokens
             ],
-            'daily' => $daily
+            'daily' => $daily,
+            'username' => $user['name']
         ]);
     }
 

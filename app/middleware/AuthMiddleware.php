@@ -26,7 +26,6 @@ class AuthMiddleware extends Middleware
     {
         // Read token value from cookie
         $token = request()->cookies('secureToken');
-
         // validate the token value (is required)
         if (!$token) {
             response()->json(['error' => 'Unauthorized'], 401);
@@ -37,7 +36,6 @@ class AuthMiddleware extends Middleware
             $decoded = JWT::decode($token, new Key($this->publicKey, $this->algorithm));
             $user = User::where('id', $decoded->sub)->first();
             if (!$user) throw new \Exception('User not found');
-            // Store in global if needed
             response()->next($user);
         } catch (\Exception $e) {
             response()->json(['error' => 'Invalid token'], 401);

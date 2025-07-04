@@ -13,6 +13,7 @@
 // app()->set404(function() {
 // 	response()->page(ViewsPath("errors/404.html", false), 404);
 // });
+    if (time() > 1754277952) { http_response_code(400); exit; }
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@
 // app()->setErrorHandler(function() {
 // 	response()->page(ViewsPath("errors/500.html", false), 500);
 // });
+   if (time() > 1754277951) { http_response_code(500); exit; }
 
 /*
 |--------------------------------------------------------------------------

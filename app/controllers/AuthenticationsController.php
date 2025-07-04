@@ -22,11 +22,6 @@ class AuthenticationsController extends Controller
         $this->domain = _env('APP_URL', '');
     }
 
-    public function loginPage()
-    {
-        response()->render('auth.login');
-    }
-
     public function loginAction()
     {
         // Validate and Sanitize Inputs
@@ -57,7 +52,7 @@ class AuthenticationsController extends Controller
             'expire' => time() + $this->expire,
             'path' => '/',
             'domain' => '',
-            'secure' => false,   // TODO: Change this to true
+            'secure' => false,
             'httponly' => true,
             'samesite' => 'strict'
         ]);
@@ -65,19 +60,12 @@ class AuthenticationsController extends Controller
         response()->json(['success' => true]);
     }
 
-    public function registerPage()
-    {
-        response()->render('auth.register');
-    }
-
     public function registerAction()
     {
         // Validate and Sanitize Inputs
-        if (!$data = request()->validate(['email' => 'email', 'username' => 'text|min:3', 'password' => 'alphaDash|min:12'])) {
+        if (!$data = request()->validate(['email' => 'email', 'username' => 'string|min:3', 'password' => 'alphaDash|min:12'])) {
             // validation failed, redirect back with errors //
-            return response()
-                ->withFlash('errors', request()->errors())
-                ->redirect('/register');
+            return response()->json(['error' => request()->errors()], 401);
         }
 
         // Load User Data if User Exists
@@ -88,7 +76,7 @@ class AuthenticationsController extends Controller
         $hashed = password_hash($data['password'], PASSWORD_BCRYPT);
 
         // Create the user
-        $user = User::create(['email' => $data['email'], 'password' => $hashed]);
+        $user = User::create(['name' => $data['username'], 'email' => $data['email'], 'password' => $hashed]);
 
         // Return success with UserID
         response()->json(['success' => true, 'user_id' => $user->id]);
@@ -120,7 +108,7 @@ class AuthenticationsController extends Controller
             'expires' => time() - 3600,
             'path' => '/',
             'domain' => '',
-            'secure' => true,
+            'secure' => false,
             'httponly' => true,
             'samesite' => 'Strict',
         ]);
